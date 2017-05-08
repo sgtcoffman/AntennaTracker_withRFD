@@ -88,8 +88,10 @@ class ServoController:
 			self.panAccel = panAccel
 
 			setAccel = [self.accelCommand,self.tiltChannel,self.tiltAccel,0]
+			setAccel = [self.accelCommand,self.rfdtiltChannel,self.tiltAccel,0]
 			self.servoController.write(setAccel)
 			setAccel = [self.accelCommand,self.panChannel,self.panAccel,0]
+			setAccel = [self.accelCommand,self.rfdpanChannel,self.panAccel,0]
 			self.servoController.write(setAccel)
 
 		except:
@@ -103,8 +105,10 @@ class ServoController:
 			self.panSpeed = panSpeed
 
 			setSpeed = [self.speedCommand,self.tiltChannel,self.tiltSpeed,0]
+			setSpeed = [self.speedCommand,self.rfdtiltChannel,self.tiltSpeed,0]
 			self.servoController.write(setSpeed)
 			setSpeed = [self.speedCommand,self.panChannel,self.panSpeed,0]
+			setSpeed = [self.speedCommand,self.rfdpanChannel,self.panSpeed,0]
 			self.servoController.write(setSpeed)
 
 		except:
