@@ -160,7 +160,7 @@ void loop() {
         lcd.setCursor(0,1);
         lcd.print("Z:");
         lcd.setCursor(3,1);
-        lcd.print(z);
+        lcd.print(z); 
         calibrated = true;
   
     }
