@@ -514,7 +514,7 @@ class StillImageSystem(QtCore.QObject):
 
 			#CHECKSUM
 			if checkours != checktheirs:
-				if trycnt < 5:		# This line sets the maximum number of checksum resends. Ex. trycnt = 5 will attempt to rereceive data 5 times before erroring out											  #I've found that the main cause of checksum errors is a bit drop or add desync, this adds a 2 second delay and resyncs both systems
+				if trycnt < 7:		# This line sets the maximum number of checksum resends. Ex. trycnt = 5 will attempt to rereceive data 5 times before erroring out											  #I've found that the main cause of checksum errors is a bit drop or add desync, this adds a 2 second delay and resyncs both systems
 					self.rfdSer.write('N')
 					trycnt += 1
 					print "try number:", str(trycnt)
