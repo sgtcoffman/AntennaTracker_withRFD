@@ -137,7 +137,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 	def __init__(self, parent=None):
 		super(MainWindow, self).__init__(parent)
 		self.setupUi(self)		# Uses the GUI built in QtCreator and interpreted using pyuic
-		
+
 		# Side Thread Setup
 		# RFD Threads
 		self.rfdListenThread = EventThread()
@@ -159,7 +159,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 		self.stillImageThread.start()
 		self.iridiumThread.start()
 		self.aprsThread.start()
-		
+
 		# Button Function Link Setup
 		# Settings Tab Button Links
 		self.updateSettings.clicked.connect(self.getSettings)
@@ -204,7 +204,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 		self.autoIridium.stateChanged.connect(self.autotrackChecked)
 		self.autoAPRS.stateChanged.connect(self.autotrackChecked)
 		self.autoRFD.stateChanged.connect(self.autotrackChecked)
-	
+
 		# Initial Still Image System Picture Display Setup
 		self.stillImageOnline = False
 		self.stillImageStall = False
@@ -224,7 +224,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 		self.picContrast = 0
 		self.picSaturation = 0
 		self.picISO = 400
-		
+
 		# Still Image Slider Updates
 		self.picWidthSlider.valueChanged.connect(self.updatePicSliderValues)
 		self.picHeightSlider.valueChanged.connect(self.updatePicSliderValues)
@@ -286,7 +286,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
 		self.payloadList = []		# List of payloads in this flight
 		self.mapMade = False
-		
+
 		self.currentBalloon = BalloonUpdate('', 0, 0, 0, 0, '', 0, 0, 0)
 		self.tabs.setCurrentIndex(0)
 
@@ -330,7 +330,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 			f.close()
 
 		event.accept()
-		
+
 	def setAutotrack(self):
 		""" Toggles autotracking """
 
@@ -341,7 +341,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 			self.status.setText("Offline")
 			self.changeTextColor(self.status,"red")
 			self.trackerLaunch.setText("Launch Antenna Tracker")
-			
+
 		else:
 			self.autotrackOnline = True
 			self.tabs.setCurrentIndex(1)
@@ -351,7 +351,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
 	def updateBalloonLocation(self, update):
 		""" Updates the tracker with the latest balloon location """
-		
+
 		# Log the balloon location no matter what
 		self.logData("balloonLocation", update.getTrackingMethod()+','+str(update.getTime())+','+str(update.getLat())+','+str(update.getLon())+','+str(update.getAlt())+','+str(update.getBear())+','+str(update.getEle())+','+str(update.getLOS()))
 
@@ -364,11 +364,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 		if update.getTrackingMethod() == 'APRS':
 			if not self.useAPRS:
 				return
-		
+
 		# Make sure it's a good location
 		if ((update.getLat() == 0.0) or (update.getLon() == 0.0) or (update.getAlt() == 0.0)):		# Don't consider updates with bad info to be new updates
 			return
-		
+
 		# Makes sure it's the newest location
 		if update.getSeconds() < self.currentBalloon.getSeconds():
 			return
@@ -376,15 +376,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 			# if self.currentBalloon.getTrackingMethod() == 'RFD':
 				# if (not self.useIridium or not self.useAPRS) and self.useRFD:
 					# return
-					
+
 			# if self.currentBalloon.getTrackingMethod() == 'Iridium':
 				# if (not self.useRFD or not self.useAPRS) and self.useIridium:
 					# return
-					
+
 			# if self.currentBalloon.getTrackingMethod() == 'APRS':
 				# if (not self.useIridium or not self.useRFD) and self.useAPRS:
 					# return
-			
+
 
 		# If you haven't returned by now, update the graphing arrays
 		try:
@@ -397,15 +397,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 		self.currentBalloon = update
 		if self.internetAccess and self.mapMade:		# Update the map
 			self.mapView.setHtml(getMapHtml(update.getLat(), update.getLon(), googleMapsApiKey))
-	
+
 	def updateIncoming(self, row, column, value):
 		""" Update the Incoming GPS Data grid with the newest values """
 		self.incomingDataTable.setItem(column, row, QtGui.QTableWidgetItem(str(value)))
-		
+
 	def updateGround(self, row, column, value):
 		""" Update the Ground Station Data grid with the newest values """
 		self.groundDataTable.setItem(column, row, QtGui.QTableWidgetItem(str(value)))
-		
+
 	def refresh(self, update):
 		""" Refreshs the info grids and plots with the newest values """
 		# Update the info grid with the newest balloon information
@@ -418,7 +418,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 		self.updateIncoming(0, 6, round(update.getLOS(), 2))
 		self.updateIncoming(0, 7, round(update.getMagDec(), 2))
 		self.updateIncoming(0, 8, update.getTrackingMethod())
-			
+
 		# Ground Station Data Table (usually doesn't change, but I guess it might)
 		self.updateGround(0, 0, self.groundLat)
 		self.updateGround(0, 1, self.groundLon)
@@ -430,12 +430,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 		self.updateGround(0, 5, self.tiltOffset)
 		self.updateGround(0, 6, self.antennaBear)
 		self.updateGround(0, 7, self.antennaEle)
-		
+
 		# Update the Graphs in the Tracker Tab
 		if self.graphReal.isChecked():						# Check to see if you have the graph checkbox selected
 			if len(self.receivedAlt) > 0:
 
-				# creates the 4 subplots 
+				# creates the 4 subplots
 				altPlot = self.figure.add_subplot(221)
 				losPlot = self.figure.add_subplot(222)
 				elePlot = self.figure.add_subplot(223)
@@ -446,7 +446,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 				losPlot.hold(False)
 				elePlot.hold(False)
 				bearPlot.hold(False)
-				
+
 				# plot data
 				altPlot.plot(self.receivedTime-self.receivedTime[0],self.receivedAlt, 'r-')
 				altPlot.set_ylabel('Altitude (ft)')
@@ -473,10 +473,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 		self.updateGround(0, 5, self.tiltOffset)
 		self.updateGround(0, 6, self.antennaBear)
 		self.updateGround(0, 7, self.antennaEle)
-					
+
 	def getSettings(self):
 		""" Go through the settings tab and update class and global variables with the new settings """
-		
+
 		# Determine whether or not to save the Data for this flight
 		if self.saveDataCheckbox.isChecked():
 			if not self.saveData:
@@ -498,11 +498,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 				f.close()
 		elif not self.saveDataCheckbox.isChecked():
 			self.saveData = False
-			
+
 		# Determine if there's internet Access for the maps
 		if self.internetCheckBox.isChecked():
 			self.internetAccess = True
-			
+
 			# Set up the Map View
 			if not self.mapMade:
 				self.mapView = WebView()
@@ -511,7 +511,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 			self.mapMade = True
 		else:
 			self.internetAccess = False
-		
+
 		# Check to see what COM ports are in use, and assign them their values from the entry boxes
 		self.servosAttached = self.servoAttached.isChecked()
 		self.RFDAttached = self.rfdAttached.isChecked()
@@ -538,7 +538,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 					self.rfdListen = RfdListen(self, self.RFD.getDevice())
 					self.rfdCommand = RfdCommand(self, self.RFD.getDevice())
 					self.stillImageSystem = StillImageSystem(self, self.RFD.getDevice())
-					
+
 					# Move them to the side threads
 					self.rfdListen.moveToThread(self.rfdListenThread)
 					self.rfdCommand.moveToThread(self.rfdCommandThread)
@@ -553,11 +553,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 					self.rfdCommand.foundIdentifier.connect(self.rfdCommand.setAcknowledged)
 					self.rfdCommand.piruntimeStart.connect(self.rfdCommand.getPiRuntimeData)
 					self.rfdCommand.statusStart.connect(self.rfdCommand.getDeviceStatus)
-					
+
 					# Connect the command and listen together
 					self.rfdListen.setCommand(self.rfdCommand)
 					self.rfdCommand.setListen(self.rfdListen)
-					
+
 					self.stillImageSystem.mostRecentImageStart.connect(self.stillImageSystem.getMostRecentImage)
 					self.stillImageSystem.imageDataStart.connect(self.stillImageSystem.getImageDataTxt)
 					self.stillImageSystem.requestedImageStart.connect(self.stillImageSystem.getRequestedImage)
@@ -567,7 +567,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 					self.stillImageSystem.hFlipStart.connect(self.stillImageSystem.picHorizontalFlip)
 					self.stillImageSystem.timeSyncStart.connect(self.stillImageSystem.time_sync)
 					self.stillImageSystem.stillInterrupt.connect(lambda: self.stillImageSystem.setInterrupt(True))
-					
+
 					self.rfdStarted = True
 
 		if self.arduinoAttached.isChecked():
@@ -585,13 +585,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 			if not self.aprsCOM.text() == "":
 				aprsCOM = str(self.aprsCOM.text())
 				self.APRS = SerialDevice(aprsCOM, 9600, 5)
-				
+
 		# Get the IMEI for the iridium modem, default to placeholder
 		if self.iridiumIMEI.text() == '':
 			self.IMEI = str(self.iridiumIMEI.placeholderText())
 		else:
 			self.IMEI = str(self.iridiumIMEI.text())
-		
+
 		# Get the center bearing
 		if self.getLocal.isChecked():
 			self.useArduino = True
@@ -642,7 +642,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 			if not self.RFDAttached:
 				self.createWarning('No RFD Attached')
 				self.autoRFD.setChecked(False)
-				self.useRFD = False 
+				self.useRFD = False
 			else:
 				self.rfdListenStart()
 
@@ -689,8 +689,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 		if self.autoIridium.isChecked() or self.autoAPRS.isChecked() or self.autoRFD.isChecked():
 			self.manualRefresh()
 		else:
-			self.autoDisabled.setChecked(True)	
-			self.useDisabled = True		
+			self.autoDisabled.setChecked(True)
+			self.useDisabled = True
 			self.manualRefresh()
 
 	def createWarning(self, text):
@@ -710,7 +710,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 	def deleteWindow(self, window):
 		""" Eliminates the window """
 		window.deleteLater()
-		
+
 	def antennaOnline(self, update):
 		""" Reaim the antennae while in autotrack mode """
 
@@ -733,7 +733,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 			# Update a nice and pretty status indicator in red
 			self.status.setText("Offline")
 			self.changeTextColor(self.status, "red")
-	
+
 	def manualEntryUpdate(self):
 		""" Takes the values from the manual coordinate entry boxes and updates the tracker """
 
@@ -764,7 +764,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 				while bear > 360:
 					bear -= 360
 				print(bear)
-				
+
 				ele = float(self.manualEntryElevation.text())
 				# Get the elevation angle between 0 and 360
 				while ele < 0:
@@ -780,10 +780,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 			except Exception, e:
 				print(str(e))
 				print("Error with Manual Angle Entry, make sure Bearing and Elevation Angle are entered")
-	
+
 	def sliderControl(self, arg):
 		""" Control the sliders when you hit the button, or stop it if you hit the button again """
-		
+
 		# When the start/stop button is clicked, toggle the state of the sliders
 		if arg == "click":
 			if not self.autotrackOnline:   # Only let this work if you're not in autotrack mode
@@ -800,16 +800,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 					self.sliderButton.setText("STOP")
 					self.sliderStatus.setText("ON")
 					self.changeTextColor(self.sliderStatus, "green")
-					
+
 		# When a slider position is changed, move the position of the servos
 		if arg == "slide":
 			if self.inSliderMode:			# Only move if you're in slider mode
 				self.moveToTarget(self.panServoSlider.value(), self.tiltServoSlider.value())
 				self.manualRefresh()			# Refresh the data tables
-					
+
 	def trimControl(self, arg):
 		""" Updates the trim values when the trim buttons are clicked, and move the tracking accordingly """
-		
+
 		if arg == 'up':
 			self.tiltOffset += 1
 			print("Tilt Trim: "+str(self.tiltOffset))
@@ -830,7 +830,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
 		self.moveToTarget(self.antennaBear, self.antennaEle)			# Move the tracker
 		self.manualRefresh()								# Update the ground station table
-			
+
 	def updateStillImageValues(self, values):
 		""" Updates the still image system slider positions to match the values """
 		self.picWidthSlider.setValue(values[0])
@@ -840,7 +840,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 		self.picContrastSlider.setValue(values[4])
 		self.picSaturationSlider.setValue(values[5])
 		self.picISOSlider.setValue(values[6])
-			
+
 	def updatePicSliderValues(self):
 		""" Updates the values displayed for the still image picture control sliders """
 		self.picCurrentWidthValue.setText(str(self.picWidthSlider.value()))
@@ -853,25 +853,25 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
 	def stillImageSystemFinished(self):
 		""" Resume the RFD listen if you were doing it before """
-		
+
 		self.stillImageStop()
 		if self.stillImageStall:
 			self.stillImageStall = False
 			print('start')
 			self.rfdListenStart()
-			
+
 	def stillImageStart(self):
 		self.stillImageOnline = True
 		self.stillImageOnlineLabel.setText("ON")
 		self.changeTextColor(self.stillImageOnlineLabel, "green")
 		self.logData('stillImage', 'toggle'+','+"Still Image System Turned On")
-		
+
 	def stillImageStop(self):
 		self.stillImageOnline = False
 		self.stillImageOnlineLabel.setText("OFF")
 		self.changeTextColor(self.stillImageOnlineLabel, "red")
 		self.logData("stillImage", 'toggle'+','+"Still Image System Turned Off")
-		
+
 	def stillImageButtonPress(self,arg):
 		""" Starts the function associate to the button pressed in the worker thread """
 
@@ -881,7 +881,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 				self.stillImageStall = True
 				self.rfdListenStop()
 			self.stillImageSystem.mostRecentImageStart.emit(self.requestedImageName.text())
-			
+
 		if arg == 'selectImage':
 			self.stillImageStart()
 			if self.stillImageOnline:
@@ -908,14 +908,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 				self.rfdListenStop()
 
 			self.stillImageSystem.imageDataStart.emit()
-			
+
 		if arg == 'getPicSettings':
 			self.stillImageStart()
 			if self.rfdListenOnline:
 				self.stillImageStall = True
 				self.rfdListenStop()
 			self.stillImageSystem.getSettingsStart.emit()
-			
+
 		if arg == 'sendNewSettings':
 			self.stillImageStart()
 			# Update the global values based on current slider position
@@ -932,21 +932,21 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 				self.stillImageStall = True
 				self.rfdListenStop()
 			self.stillImageSystem.sendSettingsStart.emit(picSettings)
-			
+
 		if arg == 'HFlip':
 			self.stillImageStart()
 			if self.rfdListenOnline:
 				self.stillImageStall = True
 				self.rfdListenStop()
 			self.stillImageSystem.hFlipStart.emit()
-			
+
 		if arg == 'VFlip':
 			self.stillImageStart()
 			if self.rfdListenOnline:
 				self.stillImageStall = True
 				self.rfdListenStop()
 			self.stillImageSystem.vFlipStart.emit()
-			
+
 		if arg == 'timeSync':
 			self.stillImageStart()
 			if self.rfdListenOnline:
@@ -966,7 +966,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 		scaledPm = pm.scaled(self.picLabel.size(), QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
 		self.picLabel.setPixmap(scaledPm)			# Set the label to the map
 		self.picLabel.show()				# Show the image
-		
+
 		self.logData('stillImage','newPic'+','+displayPath)
 
 	def updatePictureProgress(self, progress, maxProgress):
@@ -1000,7 +1000,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 			# Connect the buttons to the functions
 			self.confirmationYesButton.clicked.connect(lambda: self.getRequestedImageHelper(data))
 			self.confirmationNoButton.clicked.connect(lambda: self.deleteWindow(self.confirmationCheckWindow))
-			self.confirmationNoButton.clicked.connect(lambda: self.deleteWindow(self.picSelectionWindow))			
+			self.confirmationNoButton.clicked.connect(lambda: self.deleteWindow(self.picSelectionWindow))
 
 		else:
 			self.getRequestedImageHelper(str(data))		# Go ahead and download the picture
@@ -1019,7 +1019,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
 	def picDefaultSettings(self):
 		""" Still Image System: Sets the camera variables to the default values """
-			
+
 		# Default Picture Settings
 		width = 650
 		height = 450
@@ -1045,7 +1045,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 		print "Default ISO:", iso
 		self.updateStillBrowser("Default ISO: " + str(iso)+'\n')
 		sys.stdout.flush()			# Clear the buffer
-		
+
 		# Change the slider values
 		self.picWidthSlider.setValue(width)
 		self.picHeightSlider.setValue(height)
@@ -1054,7 +1054,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 		self.picContrastSlider.setValue(contrast)
 		self.picSaturationSlider.setValue(saturation)
 		self.picISOSlider.setValue(iso)
-		
+
 		# Update the Values
 		self.picWidth = width
 		self.picHeight = height
@@ -1063,24 +1063,24 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 		self.picContrast = contrast
 		self.picSaturation = saturation
 		self.picISO = iso
-		
+
 		return
-		
+
 	def resizePicture(self, event):
 		pm = QPixmap(self.displayPhotoPath)		# Create a pixmap from the default image
 		scaledPm = pm.scaled(self.picLabel.size(), QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
 		self.picLabel.setPixmap(scaledPm)			# Set the label to the map
 		self.picLabel.show()				# Show the image
-		
+
 	def rfdListenButtonPress(self):
 		""" Receives the press of the listen button, and handles it """
 
 		if not self.rfdListenOnline:		# If listening isn't on, turn it on
 			self.rfdListenStart()
-				
+
 		else:
 			self.rfdListenStop()
-			
+
 	def rfdListenStart(self):
 		""" Start the RFD Listen """
 		if self.stillImageOnline:
@@ -1103,10 +1103,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 		else:
 			self.rfdListenOnline = False
 			self.updateRFDBrowser("No RFD Radio attached")
-			
+
 	def rfdListenStop(self):
-	
-		self.rfdListenOnline = False 
+
+		self.rfdListenOnline = False
 
 		# Turn off the RFD listen, and change the button and label text and color
 		self.rfdListen.listenInterrupt.emit()
@@ -1115,24 +1115,24 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 		self.changeTextColor(self.rfdListenOnlineLabel,"red")
 
 		self.logData("RFD", 'toggle'+','+"RFD Listen Offline")
-			
+
 	def rfdCommandsButtonPress(self):
 		""" Toggles the state of the RFD Commands """
-		
+
 		# If the commands aren't online, turn them online, and change the text/color of the label and button
 		if not self.rfdCommandsOnline:
 			if self.stillImageOnline:		# Don't let this work if the still image system is using the RFD 900
 				print("Still Image System cannot be Online")
 				self.updateRFDBrowser("Still Image System cannot be Online")
 				return
-			if self.RFDAttached:		# Only try to do things if the RFD is attached	
+			if self.RFDAttached:		# Only try to do things if the RFD is attached
 				self.rfdCommandsOnline = True
 
 				self.logData("RFD",'toggle'+','+'RFD Commands Online')	# Log the toggle
 				self.rfdCommandButton.setText("STOP")		# Change the button and label to opposite state
 				self.rfdCommandsOnlineLabel.setText("ON")
 				self.changeTextColor(self.rfdCommandsOnlineLabel,"green")
-					
+
 				# Acquire the identifier and command
 				identifier = str(self.rfdIDEntry.text())
 				command = str(self.rfdCommandEntry.text())
@@ -1171,10 +1171,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 		self.rfdCommandButton.setText("START")
 		self.rfdCommandsOnlineLabel.setText("OFF")
 		self.changeTextColor(self.rfdCommandsOnlineLabel, "red")
-		
+
 	def getPiRuntimeDataButtonPress(self):
 		""" Check to see if the system is in a state where it can receive the pi Runtime Data """
-		
+
 		if self.stillImageOnline:
 			print("Still Image System cannot be Online")
 			self.updateRFDBrowser("Still Image System cannot be Online")
@@ -1187,13 +1187,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
 		self.rfdListenStop()
 		self.rfdCommand.piruntimeStart.emit()
-	
+
 	def piruntimeDone(self):
 		self.rfdListenStart()
 
 	def requestDeviceStatus(self):
 		""" Check to see if the system is in a state where it can receive the command relay device status """
-		
+
 		if self.stillImageOnline:
 			print("Still Image System cannot be Online")
 			self.updateRFDBrowser("Still Image System cannot be Online")
@@ -1203,7 +1203,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 			print("No RFD Attached")
 			self.updateRFDBrowser("No RFD Attached")
 			return
-			
+
 		self.rfdCommand.statusStart.emit()
 
 	def updateRFDBrowser(self, text):
@@ -1213,20 +1213,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 	def updateStillBrowser(self, text):
 		self.stillImageTextBrowser.append(text)
 		self.logData("stillImage", "newText"+','+text)
-						
+
 	def updatePayloads(self, received):
 		"""
-		Updates the payloads by creating new ones when necessary, and adding messages 
+		Updates the payloads by creating new ones when necessary, and adding messages
 		to the ones known. Updates the browsers in the payloads tabs as well
 		"""
-		
+
 		# Go through each payload in the payload list, and see if this message is from a known payload
 		knownPayload = False
 		for each in self.payloadList:
 			if each.getName() == str(received.split(';')[0]):
 				each.addMessage(str(received.split(';')[1][:-2]))
 				knownPayload = True
-		
+
 		if not knownPayload:
 			if len(received.split(';')) == 2:		# If there is a new identifier, make a new payload and add the message to it
 				print("Made new Payload: " + str(received.split(';')[0]))
@@ -1234,7 +1234,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 				self.tabs.setCurrentIndex(4)		# Change the current tab index to the payloads tab (to make the focus right)
 				self.createNewPayload(str(received.split(';')[0]), str(received.split(';')[1][:-2]))		# Make the new payload
 				self.tabs.setCurrentIndex(temp)		# Switch back to the tab you were on before it was made
-		
+
 		# Update the text browsers and maps in the payloads tab for each payload
 		for each in self.payloadList:
 			for line in each.getNewMessages():
@@ -1243,10 +1243,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 				each.getGPSBrowser().append(line.getTimestamp() + " || " + line.getMessage())
 			if each.hasMap() and each.inNewLocation():
 				each.updateMap()
-		
+
 	def changeTextColor(self, obj, color):
 		""" Changes the color of a text label to either red or green """
-		
+
 		if color == "red":		# Makes the label red
 			palette = QtGui.QPalette()
 			brush = QtGui.QBrush(QtGui.QColor(243, 0, 0))
@@ -1271,18 +1271,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 			brush.setStyle(QtCore.Qt.SolidPattern)
 			palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.WindowText, brush)
 			obj.setPalette(palette)
-			
+
 	def createNewPayload(self, name, msg):
 		""" Make a new payload, add the message received to it, and create the proper display windows in the payloads tab """
 
 		print("Create Payload")
 		print(name, msg)
-		
+
 		if len(self.payloadList) == 0:
 			self.payloadTabs = QtGui.QTabWidget()
 			self.payloadTabs.setStyleSheet('QTabBar { font-size: 18pt; font-family: MS Shell Dlg 2; }')
 			self.payloadTabGridLayout.addWidget(self.payloadTabs)
-		
+
 		# Make the payload label
 		self.newPayloadLabel = QtGui.QLabel()
 		self.newPayloadLabel.setText(name)
@@ -1309,7 +1309,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 		self.newGrid.addWidget(self.newPayloadMessagesLabel, 0, 0, 1, 1)
 		self.newGrid.addWidget(self.newPayloadGPSLabel, 0, 1, 1, 1)
 		self.newGrid.addWidget(self.newPayloadMessagesBrowser, 1, 0, 1, 1)
-		
+
 		if self.internetAccess:		# Only make the map if you have internet access
 			# Make the QWebView
 			newPayloadWebViewName = 'payloadWebView'+str(len(self.payloadList)+1)
@@ -1322,31 +1322,31 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 			self.newPayloadVertical.addWidget(self.newPayloadWebView)
 			self.newGrid.addLayout(self.newPayloadVertical, 1, 1, 1, 1)
 			self.newPayloadWebView.setHtml(getMapHtml(self.currentBalloon.getLat(), self.currentBalloon.getLon(), googleMapsApiKey))
-			
+
 		else:
 			self.newGrid.addWidget(self.newPayloadGPSBrowser, 1, 1, 1, 1)
-		
+
 		# Add the new objects to a new tab
 		self.tempWidget = QWidget()
 		self.tempWidget.setLayout(self.newGrid)
 		self.payloadTabs.addTab(self.tempWidget, name)
-		
+
 		newPayload = Payload(name, self.newPayloadMessagesBrowser, self.newPayloadGPSBrowser)		# Create the new payload
 		if self.internetAccess:		# If there's internet, add the webview
 			newPayload.addWebview(self.newPayloadWebView)
-			
+
 		newPayload.addMessage(msg)
 		self.payloadList.append(newPayload)
-		
+
 	def searchComPorts(self):
 		""" Sets the Connections based on the Com Ports in use """
-		
+
 		ardCheck = False
 		serCheck = False
 		rfdCheck = False
 		aprsCheck = False
 		ports = list(serial.tools.list_ports.comports())
-		
+
 		# Go through each port, and determine if it matches a known device
 		for each in ports:
 			print(each)
@@ -1359,7 +1359,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 				self.arduinoAttached.setChecked(True)
 				self.bearingNorth.setChecked(False)
 				ardCheck = True
-				
+
 			try:		# Mini Maestro shows up as Pololu Micro Maestro 6, but with 2 ports. We want the command port
 				if eachLst[1].find("Pololu Micro Maestro 6") and eachLst[2].find("Servo Controller Command Port") != -1:
 					servoCOM = eachLst[0].strip()
@@ -1387,7 +1387,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 				self.aprsCOM.setText(aprsCOM)
 				self.aprsAttached.setChecked(True)
 				aprsCheck = True
-				
+
 		# After checking all of the ports, you can see if a device has been disconnected
 		if not ardCheck:
 			self.arduinoAttached.setChecked(False)
@@ -1403,7 +1403,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 		if not aprsCheck:
 			self.aprsCOM.setText('')
 			self.aprsAttached.setChecked(False)
-			
+
 	def disabledChecked(self):
 		""" Makes sure that only the disabled autotrack option is checked """
 
@@ -1425,7 +1425,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 		""" Display the calibration values for the IMU in a visible window,
 		and allow the user to select when the calibration is ready
 		"""
-		
+
 		if self.ardAttached:
 			if not self.useArduino:
 				self.createWarning('Need to select Get Local for Center Bearing')
@@ -1573,7 +1573,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 				self.servoController.movePanServo(127)
 			except:
 				print("Error moving servos to center position")
-			
+
 			# Set the antenna bearing and elevation to the center position
 			self.antennaBear = self.centerBear
 			self.antennaEle = 0
@@ -1584,7 +1584,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
 	def moveToTarget(self, bearing, elevation):
 		""" Moves servos based on a bearing and elevation angle """
-		
+
 		temp = 0
 		# Uses the center bearing, and makes sure you don't do unnecessary spinning when you're close to 0/360
 		if (bearing>180) and (self.centerBear == 0):
@@ -1620,7 +1620,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 			self.servoController.moveTiltServo(math.trunc(tiltTo))
 		if temp != 0:
 				self.centerBear = temp
-			
+
 		# Write the new pointing location to the log file
 		self.logData("pointing", str(bearing)+','+str(elevation))
 
@@ -1628,19 +1628,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 		self.antennaBear = bearing
 		self.antennaEle = elevation
 		self.manualRefresh()
-	
+
 if __name__ == "__main__":
 	app = QtGui.QApplication.instance()		# checks if QApplication already exists
-	if not app:								# create QApplication if it doesnt exist 
+	if not app:								# create QApplication if it doesnt exist
 		app = QtGui.QApplication(sys.argv)
-		
+
 	# Let's .jpg be shown (http://www.qtcentre.org/threads/49119-JPG-not-working-when-calling-setPixmap()-on-QLabel)
 	path = r"C:\Users\Ground Station\Anaconda2\Lib\site-packages\PySide\plugins"
 	app.addLibraryPath(path)
 
 	with open('api_key') as f:
 		googleMapsApiKey = f.readline().strip()
-	
+
 	mGui = MainWindow()						# Launch the main window
 	mGui.showMaximized()					# Shows the main window maximized
 	sys.stdout = Unbuffered(sys.stdout)		# Sets up an unbuffered stream

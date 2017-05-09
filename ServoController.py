@@ -148,7 +148,7 @@ class ServoController:
 			movePan = [self.moveCommand,self.panChannel,chr(255-position)]
 			moveRfdPan = [self.moveCommand,self.rfdpanChannel,chr(255-position)]
 			self.servoController.write(movePan)
-			self.servorController.write(moveRfdPan)
+			self.servoController.write(moveRfdPan)
 			print "\t\tMove Pan: ", float(position)
 			return
 
