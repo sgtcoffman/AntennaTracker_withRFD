@@ -12,14 +12,14 @@ class ServoController:
         self.tiltChannel = 0
         self.tiltAccel = 1
         self.tiltSpeed = 1
-        self.tiltAngleMin = -180		# -90
-        self.tiltAngleMax = 180		 	# 90
+        self.tiltAngleMin = -180        # -90
+        self.tiltAngleMax = 180         # 90
 
         self.rfdtiltChannel = 2
         self.rfdtiltAccel = 1
         self.rfdtiltSpeed = 1
-        self.rfdtiltAngleMin = -180		# -90
-        self.rfdtiltAngleMax = 180		# 90
+        self.rfdtiltAngleMin = -180     # -90
+        self.rfdtiltAngleMax = 180      # 90
         # change the movement speed etc of ubiquity pan servo
         self.panChannel = 1
         self.panAccel = 1
@@ -103,7 +103,6 @@ class ServoController:
 
     def setServoSpeed(self, panSpeed, tiltSpeed):
         """ Sets the max speed at which the servos rotate """
-
         try:
             self.tiltSpeed = tiltSpeed
             self.panSpeed = panSpeed
@@ -122,14 +121,13 @@ class ServoController:
 
     def moveTiltServo(self, position):
         """ Takes a single argument, moves the tilt servo to the position specified by the argument """
-
         try:
 
-            ### Move the tilt servo ###
-            if position < 71:		  # 80 degrees upper limit
+            # Move the tilt servo ###
+            if position < 71:         # 80 degrees upper limit
                 moveTilt = [self.moveCommand, self.tiltChannel, chr(71)]
                 moveRfdTilt = [self.moveCommand, self.rfdtiltChannel, chr(71)]
-            elif position > 123:	   # 5 degrees lower limit
+            elif position > 123:       # 5 degrees lower limit
                 moveTilt = [self.moveCommand, self.tiltChannel, chr(123)]
                 moveRfdTilt = [self.moveCommand, self.rfdtiltChannel, chr(123)]
             else:
@@ -139,7 +137,24 @@ class ServoController:
             self.servoController.write(moveTilt)
             self.servoController.write(moveRfdTilt)
             print "\t\tMove Tilt: ", float(position)
+            s2 = self.arduino.getDevice()
+            tempPosition = '0'
+            s2.flushInput()
+            try:
+                while tempPosition[0] != '&':
+                    tempPosition = s2.readlin()
+                    tempPosition = tempPosition.split(',')
+                    display = 'Position Output ' + tempPosition
+                    print(display)
+            except IndexError:
+                print('Index Error')
 
+            if(tempPosition[2] + 1 < position):
+                self.moveTiltServo(position + 1)
+            elif(tempPosition[2] - 1 > position):
+                self.moveTiltServo(position - 1)
+            else:
+                print "No Adjustments Required"
         except Exception, e:
             print(str(e))
 
