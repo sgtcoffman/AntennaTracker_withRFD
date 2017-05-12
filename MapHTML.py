@@ -1,7 +1,7 @@
 def getMapHtml(lat, lon, apiKey):
-	""" Generates an HTML and JavaScript code segment using Google Maps API to plot the lat and lon on a map """
-	
-	maphtml = """
+    """ Generates an HTML and JavaScript code segment using Google Maps API to plot the lat and lon on a map """
+
+    maphtml = """
 	<!DOCTYPE html>
 	<html>
 	  <head>
@@ -27,13 +27,13 @@ def getMapHtml(lat, lon, apiKey):
 		  // First, create an object containing LatLng and radius for each item.
 		  var balloon = {
 			payload: {
-			  center: {lat: """ + str(lat) + """, lng: """ + str(lon)+"""},
+			  center: {lat: """ + str(lat) + """, lng: """ + str(lon) + """},
 			  rad: 3000
 			}
 		  };
 
 			function initMap() {
-			  var myLatLng = {lat: """+str(lat)+""", lng: """+str(lon)+"""};
+			  var myLatLng = {lat: """ + str(lat) + """, lng: """ + str(lon) + """};
 
 			  var map = new google.maps.Map(document.getElementById('map'), {
 			    zoom: 8,
@@ -49,9 +49,9 @@ def getMapHtml(lat, lon, apiKey):
 		  
 		</script>
 		<script async defer
-		src="https://maps.googleapis.com/maps/api/js?key="""+str(apiKey)+"""&callback=initMap">
+		src="https://maps.googleapis.com/maps/api/js?key=""" + str(apiKey) + """&callback=initMap">
 		</script>
 	  </body>
 	</html>
 	"""
-	return maphtml
+    return maphtml
