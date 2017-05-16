@@ -2,7 +2,7 @@
 """
 Antenna Tracker Controller for Trident Antenna Array and RFD Radio Controller
 
-Author:	Austin Langford, AEM
+Author:	Austin Langford, AEM, Trevor Gahl, CpE
 Based on work from Scott Miller, CpE, Dylan Trafford, CpE, and David Schwerr of the Montana Space Grant Consortium
 Software created for use by the Minnesota Space Grant Consortium
 Purpose: To acquire the location of a balloon in flight, and aim the array of antennae at the balloon

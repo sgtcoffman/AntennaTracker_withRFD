@@ -1,2 +1,2 @@
-cd C:\Users\Zinger\Desktop\AntennaTracker_withRFD\AntennaTracker_withRFD
+cd C:\Users\Trevor\Desktop\Tracker\AntennaTracker_withRFD
 python Antenna_Tracker_and_RFD_Controls_GUI.py
