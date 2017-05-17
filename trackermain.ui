@@ -2694,6 +2694,49 @@
           </widget>
          </item>
         </layout>
+        <widget class="QWidget" name="CommandTab">
+         <attribute name="title">
+          <string>Commands</string>
+         </attribute>
+         <layout class="QGridLayout" name="gridLayout_23">
+           <item row="0" column="0">
+            <layout class="QGridLayout" name="CommandTabGridLayout"/>
+            <widget class="QPushButton" name="CutDownButton">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>20</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>Cut Down</string>
+             </property>
+            </widget>
+            <widget class="QPushButton" name="IdleButton">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>20</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>Idle</string>
+             </property>
+            </widget>
+           </layout>
+          </item>
+         </layout>
+        </widget>
        </widget>
       </widget>
       <widget class="QFrame" name="autotrackStatusFrame">

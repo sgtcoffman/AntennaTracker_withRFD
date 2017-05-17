@@ -1732,6 +1732,30 @@ class Ui_MainWindow(object):
         self.gridLayout_18.addWidget(self.trimRightButton, 1, 2, 1, 1)
         self.gridLayout_7.addWidget(self.trimFrame, 1, 1, 1, 1)
         self.tabs.addTab(self.ManualControl, _fromUtf8(""))
+        self.CommandTab = QtGui.QWidget()
+        self.CommandTab.setObjectName(_fromUtf8("Commands"))
+        self.gridLayout_23 = QtGui.QGridLayout(self.CommandTab)
+        self.gridLayout_23.setObjectName(_fromUtf8("gridLayout_23"))
+        self.CommandTabGridLayout = QtGui.QGridLayout()
+        self.CommandTabGridLayout.setObjectName(_fromUtf8("CommandTabGridLayout"))
+        self.gridLayout_23.addLayout(self.CommandTabGridLayout, 0, 0, 1, 1)
+        self.CutDownButtonFrame = QtGui.QFrame(self.CommandTab)
+        sizePolicy = QtGui.QSizePolicy(
+            QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(
+            self.CutDownButtonFrame.sizePolicy().hasHeightForWidth())
+        self.CutDownButtonFrame.setSizePolicy(sizePolicy)
+        self.CutDownButtonFrame.setFrameShape(QtGui.QFrame.StyledPanel)
+        self.CutDownButtonFrame.setFrameShadow(QtGui.QFrame.Raised)
+        self.CutDownButtonFrame.setObjectName(
+            _fromUtf8("CutDownButtonFrame"))
+        self.horizontalLayout_2 = QtGui.QHBoxLayout(
+            self.CutDownButtonFrame)
+        self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
+        self.tabs.addTab(self.CommandTab, _fromUtf8(""))
+
         self.autotrackStatusFrame = QtGui.QFrame(self.settingsSplitter)
         self.autotrackStatusFrame.setFrameShape(QtGui.QFrame.StyledPanel)
         self.autotrackStatusFrame.setFrameShadow(QtGui.QFrame.Raised)
@@ -2032,3 +2056,7 @@ class Ui_MainWindow(object):
             "MainWindow", "Manual Control", None))
         self.statusLabel.setText(_translate("MainWindow", "Autotrack: ", None))
         self.status.setText(_translate("MainWindow", "Offline", None))
+        self.tabs.setTabText(self.tabs.indexOf(self.CommandTab), _translate(
+            "MainWindow", "Commands", None))
+        self.CutDownButton.setText(_translate("MainWindow", "Cut Down", None))
+        self.IdleButton.setText(_translate("MainWindow", "Idle", None))
