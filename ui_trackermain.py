@@ -2116,3 +2116,8 @@ class Ui_MainWindow(object):
             "MainWindow", "Commands", None))
         self.CutDownButton.setText(_translate("MainWindow", "Cut Down", None))
         self.IdleButton.setText(_translate("MainWindow", "Idle", None))
+
+
+'''
+as;dlkjas;dfkas;df
+'''
